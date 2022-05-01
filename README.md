@@ -302,3 +302,58 @@ Use multiple ExpressRoute circuits for these reasons:
 
 - For resiliency, in different peering locations and different providers if possible
 - For dedicated bandwidth to projects or to production, to avoid "noisy neighbor" problems
+
+##### Connectivity options for enterprise-scale
+
+###### Connectivity to Azure
+
+Azure ExpressRoute is private, dedicated connectivity to Azure and is the preferred approach for the enterprise over virtual private network (VPN). You can configure VPN as a backup route if ExpressRoute(s) fail. Because VPNs use the internet, latency can be inconsistent.
+
+Select ExpressRoute Direct or a provider by matching your requirements for peering locations. Connect to the Microsoft network with as little latency as possible. If you need more than 10 Gbps or multiple circuits that total more than 10 Gbps, consider ExpressRoute Direct. ExpressRoute Direct is a layer 2 connection from your hardware to Microsoft's inside a peering location, and it goes up to 100 Gbps.
+
+Ensure that you use the right SKU for the ExpressRoute or VPN gateways based on bandwidth and performance requirements. Otherwise, you'll be either paying too much or not getting full throughput.
+
+Be sure to deploy zone-redundant gateways where possible. When throughput from on-premises to Azure must be greater than 10 Gbps, or you need to minimize latency, enable FastPath to bypass the ExpressRoute gateway from the data path.
+
+Proactively monitor ExpressRoute circuits by using Network Performance Monitor. Use multiple ExpressRoute peering locations for resiliency. To avoid noisy-neighbor risks, don't use the same ExpressRoute circuit to connect multiple environments that require isolation or dedicated bandwidth.
+
+###### Connectivity with the public internet
+
+When you're using Azure Firewall, use Firewall Manager with Azure Virtual WAN to deploy and manage Azure Firewall across Virtual WAN hubs or in hub virtual networks. Firewall Manager is now in general availability (GA) for both Virtual WAN and regular virtual networks. Firewall Manager allows for Azure Firewall to be managed at scale. Create a global Azure Firewall policy to govern security posture across the global network environment, and assign it to all Azure Firewall instances.
+
+When you're using Azure Front Door and Azure Application Gateway to help protect HTTP/S apps, use WAF policies in Azure Front Door and lock down Azure Application Gateway to receive traffic only from Azure Front Door. Use Azure DDoS Protection Standard protection plans to help protect all public endpoints hosted within your virtual networks. DDoS Protection Standard provides SLA-backed distributed denial of service (DDoS) protection and log data.
+
+Also, use Azure Firewall or a network virtual appliance from a partner to control the IP addresses that virtual machines use to access the internet. 
+
+###### Connectivity to PaaS services
+
+Azure Private Link provides dedicated access by using private IP addresses to Azure PaaS instances, or custom services behind Azure Load Balancer Standard. Virtual network injection provides dedicated private deployments for supported services. With virtual network injection, management-plane traffic flows through public IP addresses. Private Link is the preferred solution to help secure PaaS services.
+
+##### Network segmentation planning for enterprise-scale
+
+Considerations:
+
+Design based on zero trust and assumed breach. Systems should be able to communicate with each other only on the ports and protocols that the applications need. Here are a few key items to remember:
+
+- Application security groups don't span virtual networks.
+- Network security groups are stateful, but are not firewalls. They're access control lists.
+- Azure Firewall is available from Microsoft. You can also find partner firewalls in Azure Marketplace.
+
+Recommendations:
+
+Delegate subnet creation to the owner of the landing zone. This will let the owner define how to segment workloads across subnets (for example, a single large subnet or a multitier app).
+
+The platform team can use Azure Policy to ensure that a network security group with specific rules is always associated with subnets that have deny-only policies. An example of a specific rule is denying inbound SSH or RDP from the internet, or allowing/blocking traffic across landing zones.
+
+Use network security groups to restrict traffic between subnets and other east/west traffic, and use firewalls for north/south traffic. Be sure to enable flow logs for network security groups and feed them into Traffic Analytics in order to audit traffic or debug network flows. Use network security groups selectively for traffic between landing zones.
+
+##### Network encryption planning for enterprise-scale
+
+Traffic for Azure ExpressRoute private peering isn't currently encrypted. Whenever Azure customer traffic moves between Azure datacenters, it's encrypted through the IEEE 802.1AE MAC Security standard (also known as MACsec). MACsec encryption is also possible when you're using ExpressRoute Direct. With Azure Virtual WAN, you can encrypt traffic for ExpressRoute private peering by using an IPSec tunnel of private (RFC1918) IP space.
+
+When you're using ExpressRoute Direct, encrypt traffic by using MACSec. If you need end-to-end encryption, use IPSec tunnels on top of ExpressRoute. There's no performance degradation on the Microsoft hardware when you're using MACSec, but check with your hardware vendor to understand performance implications of MACSec on your devices.
+
+### Enterprise-scale architecture operational design principles
+
+<https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-operations>
+
