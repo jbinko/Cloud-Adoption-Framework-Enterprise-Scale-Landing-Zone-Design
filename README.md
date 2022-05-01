@@ -267,3 +267,38 @@ Use an Azure Private DNS zone in the global connectivity subscription. You might
 
 For enterprise-scale, we recommend two approaches for network topologies in Azure: a network topology based on Azure Virtual WAN or the traditional hub-and-spoke model.
 
+##### Azure Virtual WAN
+
+Azure Virtual WAN is a Microsoft-managed solution that provides global transit connectivity by default. Virtual WAN hubs eliminate the need to manually configure network connectivity. Virtual WAN also offers communication between on-premises locations by using the Microsoft network, Azure ExpressRoute, and VPN.
+
+Virtual WAN simplifies end-to-end network connectivity in Azure and cross-premises by creating a hub-and-spoke network architecture. The architecture spans multiple Azure regions and on-premises locations (any-to-any connectivity) out of the box. A design consideration for any networking in Azure is to keep in mind the principle that Azure-to-Azure traffic should always stay in Azure.
+
+![virtual wan topology](Images/virtual-wan-topology.png)
+
+Recommendations:
+
+Virtual WAN for new large or global network deployments in Azure where you need global transit connectivity across Azure regions and on-premises locations. That way, you don't have to manually set up transitive routing for Azure networking.
+
+Deploy a Virtual WAN hub per Azure region, and connect the hubs to large offices or datacenters by using ExpressRoute. Use VPN for smaller locations and point-to-site VPN for remote users. Azure Firewall can be deployed in a Virtual WAN hub, but partner firewalls have to be deployed in a spoke virtual network.
+
+There's no need to build a transit network on top of Virtual WAN. Virtual WAN is the transit network. Virtual WAN is limited to 2,000 virtual machines per hub.
+
+##### Hub and spoke
+
+Considerations - Use the hub-and-spoke model if:
+
+- You have no requirements for branch-to-branch communications
+- You don't need SD-WAN integrated solutions
+- You need highly granular routing control
+- You'll deploy more than 2,000 virtual machines per hub
+
+When multiple ExpressRoute circuits are connected to the same virtual network, you must use connection weights or Border Gateway Protocol (BGP) techniques to ensure an optimal path for traffic between on-premises and Azure. If you use connection weights, BGP AS prepending is ignored.
+
+Recommendations:
+
+Each Azure region should have a hub and firewalls. ExpressRoute or VPN gateways should be deployed in that hub so that all spoke virtual networks can route through the hub or use shared services like DNS deployed there.
+
+Use multiple ExpressRoute circuits for these reasons:
+
+- For resiliency, in different peering locations and different providers if possible
+- For dedicated bandwidth to projects or to production, to avoid "noisy neighbor" problems
