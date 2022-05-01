@@ -357,3 +357,88 @@ When you're using ExpressRoute Direct, encrypt traffic by using MACSec. If you n
 
 <https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-operations>
 
+- Accelerates landing-zone creation times
+- Provides development teams with consistent environments throughout the development lifecycle
+- Ensures that central IT has the visibility and control it requires across the enterprise estate
+
+To accomplish enterprise-scale management and monitoring, you must:
+
+- Design, deploy, and integrate platform-level, holistic (horizontal) resource monitoring and alerting.
+- Define and streamline operational tasks, such as patching and backup.
+- Integrate security operations, monitoring, and logging with resources on Azure and any existing on-premises systems.
+- Configure all subscription activity logs that capture control-plane operations across resources to stream into Azure Monitor Log Analytics. This approach makes the logs available for query and analysis, subject to role-based access control (RBAC) permissions.
+
+![management and monitoring](Images/management-and-monitoring.png)
+
+#### Log Analytics workspace design
+
+Centralized logging is critical to the visibility that operations-management teams require. This centralization drives reports about change management, service health, configuration, and most other aspects of IT operations. Converging on a centralized workspace model in Log Analytics reduces both administrative effort and the chances of gaps in observability. For workspace design at enterprise scale, we recommend a single Log Analytics workspace to manage the platform centrally. An exception would be where RBAC and data-sovereignty requirements mandate separate workspaces.
+
+#### Auditing and log retention
+
+Configure diagnostic settings for a subscription via policy to send log data to the centralized Log Analytics workspace. This configuration provides a central view across subscriptions and enables the retention of log data past the default 90 days.
+
+When a customer requires log-data retention longer than two years, configure the subscription diagnostic settings also for export to Azure Storage. Use immutable storage with write once, read many (WORM) policies to make data non-erasable and non-modifiable for a user-specified interval.
+
+We recommend that you build a curated set of dashboards for specific personas within the organization's operating model.
+
+Logs and metrics are critical components of application-centric platform monitoring. Enforcing the collection of this data via policy at the platform level ensures that the data is readily available for consumption by application teams. It also prevents unintended gaps in observability across the platform.
+
+#### VM management
+
+Apply VM management configurations via policy to ensure consistent configuration across the platform. An important element of this approach is to adhere to the enterprise-scale design principle of using native Azure platform services and capabilities whenever possible.
+
+A VM-management strategy begins with backups to protect against data loss. Azure Backup is the native Azure service for VM backup. The service provides independent and isolated backups to guard against unintended destruction of the data on VMs. Backups are stored in a Recovery Services vault with built-in management of recovery points.
+
+Centralized Azure Automation accounts can provide application landing zones with easily consumable VM-management services. They can also provide central IT with the visibility and control required to ensure VM compliance with enterprise standards. Take advantage of the VM update-management and guest-configuration features of Azure Automation.
+
+Enforcing update-management configurations via policy:
+
+- Ensures that all VMs are included in the patch-management regimen
+- Gives application teams the ability to manage patch deployment for their VMs
+- Provides visibility and enforcement capabilities to the central IT team across all VMs
+
+#### Monitoring and alerts
+
+Set diagnostic settings for Azure resources via policy to export to the centralized Log Analytics workspace.
+
+#### Security monitoring
+
+Microsoft Defender for Cloud also plays an important part in the enterprise-scale monitoring strategy. It can help monitor the security of VMs, networks, storage, data services, and applications. Defender for Cloud provides advanced threat detection by using machine learning and behavioral analytics to help identify active threats targeting Azure resources. It also provides threat protection that blocks malware or other unwanted code and reduces the surface area exposed to brute-force and other network attacks. We recommend that you enable the Standard SKU for Defender for Cloud on all subscriptions via policy.
+
+#### Business continuity and disaster recovery
+
+- Availability targets are typically measured by service-level objectives (SLOs) and service-level agreements (SLAs).
+- Recovery targets are typically measured by recovery-point objectives (RPOs) and recovery-time objectives (RTOs).
+
+#### High availability
+
+- Multi-region deployments
+- Availability Zones
+- Load balancing
+- Distributed consensus
+- Geo-replication
+
+#### Disaster recovery
+
+- Multi-region network redundancy
+- Geo-replication
+- Recovery automation
+
+#### Governance
+
+Applying highly restrictive policies to workloads where they're not required can negatively impact the business's ability to use cloud capabilities fully.
+
+A well-planned combination of RBAC assignments and policies puts appropriate guardrails in place. These guardrails control who can deploy and configure resources and what resources they can deploy and configure.
+
+#### Security monitoring and an audit policy
+
+Azure AD reports provide important view into activity within the enterprise estate. Review the reports regularly as part of your security-monitoring processes. The reports include security reports and activity reports. Security reports provide insight into an organization's identities, and activity reports provide insight into user behaviors.
+
+Make Microsoft Defender for Cloud the starting point for security monitoring of Azure resources. Enable the standard tier for all subscriptions via Azure Policy.
+
+#### Platform security
+
+To effectively control an enterprise estate, an organization must develop a security allowlist plan to assess services and their security configurations. The security-configuration standards can then be enforced by using Azure Policy to ensure that the organization remains compliant with those standards. In addition to defining security standards for allowed services, an organization must establish a regular review cadence to align configurations with new service and platform capabilities.
+
+Incident-response plans must also be incorporated into the platform security strategy. For each allowed service, make a plan for how to manage security-related incidents. The plans should include prescriptive remediation activities and designate responsible teams for escalation.
