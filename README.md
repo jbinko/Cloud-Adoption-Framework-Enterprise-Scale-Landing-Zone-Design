@@ -1,10 +1,12 @@
-# Cloud Adoption Framework Enterprise Scale Landing Zone Design
+# Enterprise-scale architecture in Azure
 
-## Public Resources
+## Cloud Adoption Framework Enterprise Scale Landing Zone Design
+
+### Public Resources
 
 See [enterprise-scale architecture diagram PDF](https://raw.githubusercontent.com/microsoft/CloudAdoptionFramework/master/ready/enterprise-scale-architecture.pdf)
 
-## Introduction to enterprise-scale landing zones in the Microsoft Cloud Adoption Framework for Azure
+### Introduction to enterprise-scale landing zones in the Microsoft Cloud Adoption Framework for Azure
 
 <https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-introduction>
 
@@ -79,7 +81,7 @@ Critical design areas:
 - Security, governance, and compliance: This critical design area covers encryption and a framework for assessing the enterprise security readiness of Azure services.
 - Platform automation and DevOps: Many traditional IT operating models aren't compatible with the cloud. In this section, we look at planning for a platform DevOps approach, as well as central and federated responsibilities.
 
-## Enterprise-scale architecture organizational design principles
+### Enterprise-scale architecture organizational design principles
 
 <https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-organization/1-introduction>
 
@@ -180,13 +182,13 @@ If an organization has a scenario where an application that uses integrated Wind
 
 Use managed identities instead of service principals for authentication to Azure services.
 
-## Management group and subscription organization
+### Management group and subscription organization
 
 Properly organizing your subscriptions will play a key role in governance for your cloud resources. It also ensures you can manage the costs for resources and quotas for deployed resources in your organization.
 
 ![subscription organization](Images/subscription-organization.png)
 
-### Define a management group hierarchy
+#### Define a management group hierarchy
 
 When you define the management-group hierarchy, consider if management groups can be aggregated by policy and initiative assignments via Azure Policy. This capability will provide flexibility and organization of policy across multiple subscriptions. Also, keep in consideration that a management group tree can support up to six levels of depth. This limit doesn't include the tenant root level or the subscription level.
 
@@ -206,7 +208,7 @@ Create a platform-management group under the root management group to support co
 
 Limit the number of Azure Policy assignments made at the root management group scope (/). This limitation minimizes debugging inherited policies in lower-level management groups. Don't create any subscriptions under the root management group. This hierarchy ensures that subscriptions don't inherit only the small set of Azure policies assigned at the root-level management group, which doesn't provide a full set necessary for a workload.
 
-### Subscription organization and governance
+#### Subscription organization and governance
 
 Subscriptions are a unit of management, billing, and scale within Azure. They play a critical role when you're designing for large-scale Azure adoption.
 
@@ -224,19 +226,19 @@ Group subscriptions together under management groups aligned within the manageme
 
 Establish a dedicated management subscription in the platform-management group to support global management capabilities, such as Azure Monitor Log Analytics workspaces and Azure Automation runbooks. Establish a dedicated identity subscription in the platform-management group to host Windows Server Active Directory domain controllers, when necessary. Establish a dedicated connectivity subscription in the platform-management group to host an Azure Virtual WAN hub, private domain name system (DNS), ExpressRoute circuit, and other networking resources. A dedicated subscription ensures that all foundation network resources are billed together and isolated from other workloads.
 
-### Establish cost management
+#### Establish cost management
 
 Consider a potential need for chargeback models where shared platform as a service (PaaS) resources are concerned, such as Azure App Service Environment and Azure Kubernetes Service, which might need to be shared to achieve higher density. Use a shutdown schedule for nonproduction workloads to optimize costs. Use Azure Advisor to check cost optimization recommendations.
 
 We recommend the use of Azure Cost Management + Billing for cost aggregation. Make it available to application owners. Use Azure resource tags for cost categorization and resource grouping. Using tags allows you to have a chargeback mechanism for workloads that share a subscription or for a given workload that spans across multiple subscriptions.
 
-## Network design principles for enterprise-scale architecture
+### Network design principles for enterprise-scale architecture
 
 One of the most critical considerations is to not use overlapping RFC 1918 (private) IP space with on-premises or other clouds. Keep in mind that Azure will reserve five IP addresses for each subnet in a virtual network. Also note that some Azure services, like an Azure ExpressRoute gateway or Azure Firewall, will require dedicated subnets.
 Plan the cloud IP schema well in advance. Each Azure region should get its own easily summarized range. For instance, 10.1.0.0/16 is West US 2 and 10.2.0.0/16 is North Europe.
 Make sure to stick with private IP space. Use public IPs only if you own them and are out of private IP space.
 
-### DNS planning for enterprise-scale
+#### DNS planning for enterprise-scale
 
 If you need only resolution inside an Azure virtual network, use Azure Private DNS to minimize your operational and administrative effort. For cross-premises resolution, deploy at least two DNS resolvers per Azure region into an Azure virtual network. Configure the virtual networks to use those resolvers. This allows for DNS resolution to not be affected by latency or be offline because of a single VM failure. Use zone-redundant services where available.
 
@@ -246,7 +248,7 @@ Enable DNS autoregistration for Azure VMs, so VMs can locate each other by name.
 
 Use an Azure Private DNS zone in the global connectivity subscription. You might need more zones for services such as Azure Private Link.
 
-### Network topology for enterprise-scale
+#### Network topology for enterprise-scale
 
 For enterprise-scale, we recommend two approaches for network topologies in Azure: a network topology based on Azure Virtual WAN or the traditional hub-and-spoke model.
 
