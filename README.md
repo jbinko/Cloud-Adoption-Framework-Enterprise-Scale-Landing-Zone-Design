@@ -12,9 +12,11 @@ See [enterprise-scale architecture diagram PDF](https://raw.githubusercontent.co
 
 It's a major shift for a centralized IT organization in this scenario to move from providing all the infrastructure (such as buildings for people to live or work in) to providing the zoning guidelines (guardrails that are established so that other business units can build their infrastructure and applications).
 
-Architecture complexity: When an organization lacks the required level of understanding and experience on Azure, cloud adoption can be challenging. 
-Operating compatibility: Existing approaches and functions for the traditional delivery and management of IT services aren't compatible with the Azure platform and cloud operating models. -> Organizations need an sample continuous integration and continuous delivery (CI/CD) pipeline that has an enterprise-scale approach to help them.
-Lack of trust and desire for control: The absence of a detailed, compliant cloud architecture and a well-defined operating model to support such a platform might lead an IT team to distrust Azure, and instead try to maintain full control. The desire to maintain control often involves building walls and complicated processes, which ultimately get in the way of the business units that are adopting Azure.
+- Architecture complexity: When an organization lacks the required level of understanding and experience on Azure, cloud adoption can be challenging. 
+
+- Operating compatibility: Existing approaches and functions for the traditional delivery and management of IT services aren't compatible with the Azure platform and cloud operating models. -> Organizations need an sample continuous integration and continuous delivery (CI/CD) pipeline that has an enterprise-scale approach to help them.
+
+- Lack of trust and desire for control: The absence of a detailed, compliant cloud architecture and a well-defined operating model to support such a platform might lead an IT team to distrust Azure, and instead try to maintain full control. The desire to maintain control often involves building walls and complicated processes, which ultimately get in the way of the business units that are adopting Azure.
 
 establish the following practices:
 - Platform architecture in production: Ensure that key foundational services, such as identity and access management, security, networking, monitoring, and shared infrastructure services, are in place.
