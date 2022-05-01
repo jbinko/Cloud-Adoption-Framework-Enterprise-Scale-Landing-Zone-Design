@@ -19,6 +19,7 @@ It's a major shift for a centralized IT organization in this scenario to move fr
 - Lack of trust and desire for control: The absence of a detailed, compliant cloud architecture and a well-defined operating model to support such a platform might lead an IT team to distrust Azure, and instead try to maintain full control. The desire to maintain control often involves building walls and complicated processes, which ultimately get in the way of the business units that are adopting Azure.
 
 establish the following practices:
+
 - Platform architecture in production: Ensure that key foundational services, such as identity and access management, security, networking, monitoring, and shared infrastructure services, are in place.
 - Cloud operating model: To support the platform architecture, ensure that a cross-functional capability that combines engineering and operations is in place.
 - Democratization: Ensure that subscriptions, aligned with the platform architecture, are unblocked and provided to business units for the design, development, and testing that are needed to migrate workloads.
@@ -70,7 +71,9 @@ meet your organization's critical requirements as they relate to:
 - Service management, such as incident response and support.
 - A service catalog, such as configuration management database.
 
-Subscription democratization - Subscriptions are units of management and scale that are aligned with an organization's business goals and priorities. Avoid maintaining centralized control and management of subscriptions, and allow business units to manage subscriptions themselves. Azure policies are applied to provide the necessary guardrails. Policy helps to provide application owners both sufficient freedom and a secure path.
+### Subscription democratization
+
+Subscriptions are units of management and scale that are aligned with an organization's business goals and priorities. Avoid maintaining centralized control and management of subscriptions, and allow business units to manage subscriptions themselves. Azure policies are applied to provide the necessary guardrails. Policy helps to provide application owners both sufficient freedom and a secure path.
 
 Critical design areas:
 
@@ -85,9 +88,11 @@ Critical design areas:
 
 ### Enterprise-scale architecture organizational design principles
 
-<https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-organization/1-introduction>
+<https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-organization>
 
 An Enterprise Agreement (EA) enrollment represents the commercial relationship between Microsoft and how your organization uses Azure. It provides the basis for billing across all your subscriptions and affects the administration of your digital estate. Your EA enrollment is managed via an Azure EA portal. An enrollment often represents an organization's hierarchy, which includes departments, accounts, and subscriptions. This hierarchy represents cost-enrollment groups within an organization. You can also create and manage API keys for your enrollment to consume financial data in external systems.
+
+![enterprise agreement](Images/enterprise-agreement.png)
 
 - Departments help to segment costs into logical groupings and to set a budget or quota at the department level. The quota isn't firmly enforced, and is used for reporting purposes.
 - Accounts are organizational units in the Azure EA portal. They're used to manage subscriptions and access reports.
@@ -103,51 +108,56 @@ Enterprise user roles:
 
 Enterprise enrollment design recommendations and considerations
 
-Recommendations
+Recommendations:
 
-Only use the Work or school account authentication type for all account types. Avoid using the Microsoft account type.
-Set up the notification contact email address to ensure that notifications are sent to an appropriate group mailbox.
-Assign a budget for each account, and establish an alert associated with the budget.
-An organization can have a variety of structures, such as functional, divisional, geographic, matrix, or team structure. Use organizational structure to map your organization structure to your enrollment hierarchy.
-Create a new department for IT if business domains have independent IT capabilities.
-Restrict and minimize the number of account owners within the enrollment to avoid the proliferation of privileged access to subscriptions and associated Azure resources.
-If you use multiple Azure Active Directory (Azure AD) tenants, verify that the account owner is associated with the same tenant in which subscriptions for the account are provisioned.
-Set up enterprise dev/test and production environments at an EA account level to support holistic isolation.
-Don't ignore notification emails sent to the notification account email address. Microsoft sends important EA-wide communications to this account.
-Don't move or rename an EA account in Azure AD.
-Periodically audit the EA portal to review who has access, and avoid using a Microsoft account when possible.
-Considerations
+- Only use the Work or school account authentication type for all account types. Avoid using the Microsoft account type.
+- Set up the notification contact email address to ensure that notifications are sent to an appropriate group mailbox.
+- Assign a budget for each account, and establish an alert associated with the budget.
+- An organization can have a variety of structures, such as functional, divisional, geographic, matrix, or team structure. Use organizational structure to map your organization structure to your enrollment hierarchy.
+- Create a new department for IT if business domains have independent IT capabilities.
+- Restrict and minimize the number of account owners within the enrollment to avoid the proliferation of privileged access to subscriptions and associated Azure resources.
+- If you use multiple Azure Active Directory (Azure AD) tenants, verify that the account owner is associated with the same tenant in which subscriptions for the account are provisioned.
+- Set up enterprise dev/test and production environments at an EA account level to support holistic isolation.
+- Don't ignore notification emails sent to the notification account email address. Microsoft sends important EA-wide communications to this account.
+- Don't move or rename an EA account in Azure AD.
+- Periodically audit the EA portal to review who has access, and avoid using a Microsoft account when possible.
 
-The enrollment provides a hierarchical organizational structure to govern the management of subscriptions
-Multiple environments can be separated at an EA-account level to support holistic isolation.
-There can be multiple admins appointed to a single enrollment
-Each subscription must have an associated account owner
-Each account owner will be made a subscription owner for any subscriptions provisioned under that account
-A subscription can belong to only one account at any given time
-A subscription can be suspended based on a specified set of criteria
+Considerations:
+
+- The enrollment provides a hierarchical organizational structure to govern the management of subscriptions
+- Multiple environments can be separated at an EA-account level to support holistic isolation.
+- There can be multiple admins appointed to a single enrollment
+- Each subscription must have an associated account owner
+- Each account owner will be made a subscription owner for any subscriptions provisioned under that account
+- A subscription can belong to only one account at any given time
+- A subscription can be suspended based on a specified set of criteria
 
 Azure AD tenants design recommendations and considerations
 
-Recommendations
+Recommendations:
 
-Use Azure AD seamless single sign-on based on the selected planning topology.
-If your organization doesn't have an identity infrastructure, start by implementing an Azure AD-only identity deployment. Such a deployment with Azure Active Directory Domain Services and Microsoft Enterprise Mobility + Security provides end-to-end protection for SaaS applications, enterprise applications, and devices.
-Multifactor authentication provides another layer of security the second barrier of authentication. Enforce multifactor authentication and Conditional Access policies for all privileged accounts for greater security.
-Plan for and implement emergency-access or break-glass accounts to prevent tenant-wide account lockout.
-Use Azure AD Privileged Identity Management for identity and access management.
-If dev/test and production are going to be isolated environments from an identity perspective, separate them at a tenant level via multiple tenants.
-Avoid creating a new Azure AD tenant unless there's a strong identity and access management justification and processes are already in place.
-Considerations
+- Use Azure AD seamless single sign-on based on the selected planning topology.
+- If your organization doesn't have an identity infrastructure, start by implementing an Azure AD-only identity deployment. Such a deployment with Azure Active Directory Domain Services and Microsoft Enterprise Mobility + Security provides end-to-end protection for SaaS applications, enterprise applications, and devices.
+- Multifactor authentication provides another layer of security the second barrier of authentication. Enforce multifactor authentication and Conditional Access policies for all privileged accounts for greater security.
+- Plan for and implement emergency-access or break-glass accounts to prevent tenant-wide account lockout.
+- Use Azure AD Privileged Identity Management for identity and access management.
+- If dev/test and production are going to be isolated environments from an identity perspective, separate them at a tenant level via multiple tenants.
+- Avoid creating a new Azure AD tenant unless there's a strong identity and access management justification and processes are already in place.
 
-Multiple Azure AD tenants can function in the same enrollment
+Considerations:
 
-Azure Active Directory (Azure AD) role-based access control (RBAC) and custom role definitions. ????
+- Multiple Azure AD tenants can function in the same enrollment
+
+### Identity and access management
+
+Azure Active Directory (Azure AD) role-based access control (RBAC) and custom role definitions.
 
 common design considerations and recommendations to consider for an enterprise landing zone:
 ![identity access management](Images/identity-access-management.png)
 
 Custom RBAC Roles
 <https://docs.microsoft.com/en-us/learn/modules/enterprise-scale-organization/3-identity-access-management>
+
 - Azure platform owner: Used for management group and subscription lifecycle management.
 - Network management (NetOps): Used for platform-wide global connectivity management of virtual networks, user data repositories, network security groups, network virtual appliances, virtual private networks, Azure ExpressRoute, and others.
 - Security operations (SecOps): Security administrator role with a horizontal view across the entire Azure estate.
